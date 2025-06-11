@@ -1,28 +1,41 @@
 name: assignment-test
+
 on:
   push:
     tags-ignore:
-      - '*'
+      - "*"
     branches:
-      - '*'
+      - "*"
 
 jobs:
   unit-test:
     runs-on: self-hosted
-    container: cuaesd/aesd-autotest:24-unit-test
+    container:
+      image: cuaesd/aesd-autotest:24-unit-test
     steps:
       - uses: actions/checkout@v2
+
       - name: Checkout submodules
         run: git submodule update --init --recursive
+
+      - name: Make unit test executable (just in case)
+        run: chmod +x ./unit-test.sh
+
       - name: Run unit test
         run: ./unit-test.sh
 
   full-test:
     runs-on: self-hosted
-    container: cuaesd/aesd-autotest:24-assignment1
+    container:
+      image: cuaesd/aesd-autotest:24-assignment1
     steps:
       - uses: actions/checkout@v2
+
       - name: Checkout submodules
         run: git submodule update --init --recursive
+
+      - name: Make full test executable (just in case)
+        run: chmod +x ./full-test.sh
+
       - name: Run full test
         run: ./full-test.sh
